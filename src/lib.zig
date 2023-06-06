@@ -35,7 +35,7 @@ pub const Options = struct {
     dict: ?Dict = null,
 };
 
-pub fn sluifyAlloc(allocator: Allocator, s: []const u8, options: Options) ![]const u8 {
+pub fn slugifyAlloc(allocator: Allocator, s: []const u8, options: Options) ![]const u8 {
     var buf = try std.ArrayList(u8).initCapacity(allocator, s.len);
     defer buf.deinit();
     var out = buf.writer();
@@ -71,7 +71,7 @@ pub fn sluifyAlloc(allocator: Allocator, s: []const u8, options: Options) ![]con
     return buf.toOwnedSlice();
 }
 
-pub fn sluify(dest: []u8, s: []const u8, options: Options) ![]const u8 {
+pub fn slugify(dest: []u8, s: []const u8, options: Options) ![]const u8 {
     var fbs = std.io.fixedBufferStream(dest);
     var out = fbs.writer();
     var prev_is_dash = true;
@@ -101,7 +101,7 @@ pub fn sluify(dest: []u8, s: []const u8, options: Options) ![]const u8 {
 
 fn testConversionAlloc(s: []const u8, expect: []const u8) !bool {
     const allocator = testing.allocator;
-    const res = try sluifyAlloc(allocator, s, .{});
+    const res = try slugifyAlloc(allocator, s, .{});
     defer allocator.free(res);
 
     return std.mem.eql(u8, res, expect);
@@ -109,7 +109,7 @@ fn testConversionAlloc(s: []const u8, expect: []const u8) !bool {
 
 fn testConversion(s: []const u8, expect: []const u8) !bool {
     var buf: [1024]u8 = undefined;
-    const res = try sluify(&buf, s, .{});
+    const res = try slugify(&buf, s, .{});
 
     return std.mem.eql(u8, res, expect);
 }
@@ -131,7 +131,7 @@ test "test conversion buffer" {
 test "test custom sep" {
     const allocator = testing.allocator;
 
-    const res = try sluifyAlloc(allocator, "  Déjà Vu!  ", .{ .sep = "__" });
+    const res = try slugifyAlloc(allocator, "  Déjà Vu!  ", .{ .sep = "__" });
     defer allocator.free(res);
 
     try testing.expectEqualStrings("deja__vu", res);
@@ -148,7 +148,7 @@ test "test dict" {
     // à
     try dict.put(224, "aa");
 
-    const res = try sluifyAlloc(allocator, "  Déjà Vu!  ", .{ .dict = dict });
+    const res = try slugifyAlloc(allocator, "  Déjà Vu!  ", .{ .dict = dict });
     defer allocator.free(res);
 
     try testing.expectEqualStrings("deejaa-vu", res);

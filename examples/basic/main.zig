@@ -12,6 +12,7 @@ pub fn main() !void {
 
     // Or use a buffer
     var buf: [1024]u8 = undefined;
-    const res2 = try slugify(&buf, "🌿🐌🌲", .{});
+    // const res2 = try slugify(&buf, "🌿🐌🌲", .{});
+    const res2 = try slugify(&buf, "𝒔𝒍𝒖𝒈𝒊𝒇𝒚 𝒂 𝒔𝒕𝒓𝒊𝒏𝒈", .{});
     std.debug.print("{s}\n", .{res2});
 }

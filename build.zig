@@ -2,6 +2,7 @@ const std = @import("std");
 
 const examples = .{
     "basic",
+    "replacement",
 };
 
 // Although this function looks imperative, note that its job is to

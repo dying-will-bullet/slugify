@@ -15,6 +15,9 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
+    const opts = .{ .target = target, .optimize = optimize };
+    const deunicode_module = b.dependency("deunicode", opts).module("deunicode");
+
     const lib = b.addStaticLibrary(.{
         .name = "slugify",
         // In this case the main source file is merely a path, however, in more
@@ -23,6 +26,8 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+
+    lib.addModule("deunicode", deunicode_module);
 
     // This declares intent for the library to be installed into the standard
     // location when the user invokes the "install" step (the default step when
@@ -36,6 +41,7 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    main_tests.addModule("deunicode", deunicode_module);
 
     const run_main_tests = b.addRunArtifact(main_tests);
 

@@ -62,6 +62,22 @@ Return the converted string. The caller is should free the memory.
 
 Use buffer instead of allocator. Return a slice of the buffer.
 
+## slugify implementations in different languages
+
+It is important to note that there is no universal standard for converting a Unicode character to an ASCII string.
+The same Han character may have different transliterations in different languages.
+For example, in Japanese, "世界" is transliterated as "sekai," while in Chinese, it is transliterated as "shijie".
+This complexity also applies to emojis. For instance, the ♥ emoji can represent "love" or "heart" depending on the context.
+
+Different implementations may use different mapping table, and I cannot guarantee that their results will be the same.
+Here are slugify implementations in other languages:
+
+- Java: [slugify/slugify](https://github.com/slugify/slugify)
+- Rust: [Stebalien/slug-rs](https://github.com/Stebalien/slug-rs)
+- Python: [un33k/python-slugify](https://github.com/un33k/python-slugify)
+- JavaScript: [simov/slugify](https://github.com/simov/slugify)
+- JavaScript: [sindresorhus/slugify](https://github.com/sindresorhus/slugify)
+
 ## LICENSE
 
 MIT License Copyright (c) 2023, Hanaasagi

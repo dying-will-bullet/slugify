@@ -26,6 +26,52 @@ pub fn main() !void {
 }
 ```
 
+## Installation
+
+You can install it using a package manager or manually as shown below.
+
+Add `slugify` as dependency in `build.zig.zon`:
+
+```
+.{
+    .name = "my-project",
+    .version = "0.1.0",
+    .dependencies = .{
+       .slugify = .{
+           .url = "https://github.com/dying-will-bullet/slugify/archive/refs/tags/v0.1.0.tar.gz",
+           .hash = "12208e86bbf6970f74f85859cc90a601d6cb381ef8637b0aa7901647750bafa6ac8c",
+       },
+    },
+}
+```
+
+Add `slugify` as module in `build.zig`:
+
+```diff
+diff --git a/build.zig b/build.zig
+index 60fb4c2..0255ef3 100644
+--- a/build.zig
++++ b/build.zig
+@@ -15,6 +15,9 @@ pub fn build(b: *std.Build) void {
+     // set a preferred release mode, allowing the user to decide how to optimize.
+     const optimize = b.standardOptimizeOption(.{});
+
++    const opts = .{ .target = target, .optimize = optimize };
++    const slugify_module = b.dependency("slugify", opts).module("slugify");
++
+     const exe = b.addExecutable(.{
+         .name = "m",
+         // In this case the main source file is merely a path, however, in more
+@@ -23,6 +26,7 @@ pub fn build(b: *std.Build) void {
+         .target = target,
+         .optimize = optimize,
+     });
++    exe.addModule("slugify", slugify_module);
+
+     // This declares intent for the executable to be installed into the
+     // standard location when the user invokes the "install" step (the default
+```
+
 ## API
 
 ### `Options`

@@ -53,7 +53,7 @@ pub fn slugifyAlloc(allocator: Allocator, s: []const u8, options: Options) ![]co
             }
         }
         if (codepoint < 0x7F) {
-            try pushChar(@truncate(u8, codepoint), out, &prev_is_dash, options.sep);
+            try pushChar(@truncate(codepoint), out, &prev_is_dash, options.sep);
         } else {
             const res = deuni.getReplacement(codepoint) orelse options.sep;
             for (res) |c| {
@@ -79,7 +79,7 @@ pub fn slugify(dest: []u8, s: []const u8, options: Options) ![]const u8 {
 
     while (iter.nextCodepoint()) |codepoint| {
         if (codepoint < 0x7F) {
-            try pushChar(@truncate(u8, codepoint), out, &prev_is_dash, options.sep);
+            try pushChar(@truncate(codepoint), out, &prev_is_dash, options.sep);
         } else {
             const res = deuni.getReplacement(codepoint) orelse options.sep;
             for (res) |c| {
